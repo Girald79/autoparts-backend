@@ -82,7 +82,7 @@ app.get("/api/auth/me", auth, (req, res) => res.json(req.user));
 app.get("/api/pieces", auth, async (req, res) => {
   try {
     const { search, categorie, stock } = req.query;
-    let q = `SELECT p.*, f.nom as fournisseur_nom FROM pieces p
+    let q = `SELECT p.*, f.nom as fournisseur_nom, COALESCE(p.photos, '{}') as photos FROM pieces p
              LEFT JOIN fournisseurs f ON p.fournisseur_id = f.id WHERE 1=1`;
     const params = [];
 
