@@ -55,10 +55,10 @@ app.post("/api/auth/login", async (req, res) => {
   try {
     const result = await pool.query("SELECT * FROM employes WHERE actif = true");
     let employe = null;
-for (const e of result.rows) {
-  const match = await bcrypt.compare(pin, e.pin_hash);
-  if (match) { employe = e; break; }
-}
+    for (const e of result.rows) {
+      const ok = await bcrypt.compare(String(pin), e.pin_hash);
+      if (ok) { employe = e; break; }
+    }
     if (!employe) return res.status(401).json({ erreur: "Code PIN incorrect" });
     const token = jwt.sign(
       { id: employe.id, nom: employe.nom, role: employe.role },
